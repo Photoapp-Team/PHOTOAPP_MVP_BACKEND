@@ -81,7 +81,8 @@ const userSchema = new mongoose.Schema({
     ],
   },
   displayPics: {
-    type: [
+    type: [String]
+
       {
         type: String,
       },
