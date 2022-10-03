@@ -61,7 +61,8 @@ const userSchema = new mongoose.Schema({
   favs: {
     type: [
       {
-        type: String,
+        userId: String,
+
       },
     ],
   },
