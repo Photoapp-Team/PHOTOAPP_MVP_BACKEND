@@ -33,7 +33,7 @@ const sessionSchema = new mongoose.Schema({
         name: {
           type: String,
         },
-        comment: {
+        note: {
           type: String,
         },
       },
@@ -83,6 +83,20 @@ const sessionSchema = new mongoose.Schema({
     type: [
       {
         type: String,
+        enum: [
+          "scheduled",
+          "approved",
+          "payed",
+          "cancelled",
+          "onGoing",
+          "preUploaded",
+          "selected",
+          "editing",
+          "delivered",
+          "downloaded",
+          "closeDate",
+          "expirationDate",
+        ],
       },
     ],
   },

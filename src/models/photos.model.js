@@ -10,9 +10,7 @@ const photoSchema = new mongoose.Schema({
   likes: {
     type: [
       {
-        userId: {
-          type: String,
-        },
+        userId: String,
       },
     ],
   },

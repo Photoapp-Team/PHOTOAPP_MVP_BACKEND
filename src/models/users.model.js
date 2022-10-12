@@ -34,7 +34,7 @@ const userSchema = new mongoose.Schema({
         type: String,
       },
       number: {
-        type: Number,
+        type: String,
       },
       zipCode: {
         type: Number,
@@ -59,9 +59,7 @@ const userSchema = new mongoose.Schema({
   favs: {
     type: [
       {
-        userId: {
-          type: String,
-        },
+        userId: String,
       },
     ],
   },
@@ -81,11 +79,7 @@ const userSchema = new mongoose.Schema({
     ],
   },
   displayPics: {
-    type: [
-      {
-        type: String,
-      },
-    ],
+    type: [String],
   },
   phoneNumber: {
     type: Number,
@@ -111,8 +105,18 @@ const userSchema = new mongoose.Schema({
       country: {
         type: String,
       },
-      zipCode: {
+      suburb: {
         type: String,
+      },
+      street: {
+        type: String,
+      },
+      number: {
+        type: String,
+      },
+      zipCode: {
+        type: Number,
+        maxlength: 6,
       },
     },
   },
