@@ -3,14 +3,14 @@ const mongoose = require("mongoose");
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
-    minlenght: 3,
-    maxlenght: 25,
+    minlength: 3,
+    maxlength: 25,
     required: true,
   },
   lastname: {
     type: String,
-    minlenght: 3,
-    maxlenght: 25,
+    minlength: 3,
+    maxlength: 25,
     required: true,
   },
   username: {
@@ -59,7 +59,9 @@ const userSchema = new mongoose.Schema({
   favs: {
     type: [
       {
-        type: String,
+        userId: {
+          type: String,
+        },
       },
     ],
   },
@@ -99,11 +101,20 @@ const userSchema = new mongoose.Schema({
     ],
   },
   location: {
-    type: [
-      {
+    type: {
+      city: {
         type: String,
       },
-    ],
+      state: {
+        type: String,
+      },
+      country: {
+        type: String,
+      },
+      zipCode: {
+        type: String,
+      },
+    },
   },
   premium: {
     type: {
@@ -114,6 +125,19 @@ const userSchema = new mongoose.Schema({
       status: {
         type: String,
         enum: ["isActive", "isExpired"],
+      },
+    },
+  },
+  socialNetwork: {
+    type: {
+      facebook: {
+        type: String,
+      },
+      instagram: {
+        type: String,
+      },
+      www: {
+        type: String,
       },
     },
   },
