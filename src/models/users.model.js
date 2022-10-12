@@ -130,6 +130,9 @@ const userSchema = new mongoose.Schema({
         type: String,
         enum: ["isActive", "isExpired"],
       },
+      expirationDate: {
+        type: Date,
+      },
     },
   },
   socialNetwork: {
