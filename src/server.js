@@ -12,7 +12,7 @@ server.use(express.json());
 
 server.use("/users", routerUser);
 
-router.get("/", async (request, response) => {
+server.get("/", async (request, response) => {
   response.json("Welcome to the Fotofi API");
 });
 

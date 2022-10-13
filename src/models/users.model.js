@@ -21,6 +21,7 @@ const userSchema = new mongoose.Schema({
   email: {
     type: String,
     required: true,
+    unique: true,
   },
   address: {
     type: {
@@ -125,10 +126,6 @@ const userSchema = new mongoose.Schema({
       isPremium: {
         type: Boolean,
         default: false,
-      },
-      status: {
-        type: String,
-        enum: ["isActive", "isExpired"],
       },
       expirationDate: {
         type: Date,
