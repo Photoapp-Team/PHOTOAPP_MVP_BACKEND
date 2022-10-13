@@ -1,34 +1,41 @@
 const mongoose = require("mongoose");
 
 const photoSchema = new mongoose.Schema({
-  info: {
+  url: {
+    type: String,
+  },
+  createdBy: {
+    type: String,
+  },
+  likes: {
     type: [
       {
-        url: {
-          type: String,
-        },
-        createdBy: {
-          type: String,
-        },
-        likes: {
-          type: [
-            {
-              userId: String,  
-            },
-          ],
-        },
-        tags: {
-          type: [
-            {
-              type: String,
-            },
-          ],
-        },
-        location: {
-          type: String,
-        },
+        userId: String,
       },
     ],
+  },
+  tags: {
+    type: [
+      {
+        type: String,
+      },
+    ],
+  },
+  location: {
+    type: {
+      city: {
+        type: String,
+      },
+      state: {
+        type: String,
+      },
+      country: {
+        type: String,
+      },
+      zipCode: {
+        type: String,
+      },
+    },
   },
 });
 

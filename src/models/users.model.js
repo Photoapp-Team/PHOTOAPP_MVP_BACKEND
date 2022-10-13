@@ -3,14 +3,14 @@ const mongoose = require("mongoose");
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
-    minlenght: 3,
-    maxlenght: 25,
+    minlength: 3,
+    maxlength: 25,
     required: true,
   },
   lastname: {
     type: String,
-    minlenght: 3,
-    maxlenght: 25,
+    minlength: 3,
+    maxlength: 25,
     required: true,
   },
   username: {
@@ -36,7 +36,6 @@ const userSchema = new mongoose.Schema({
       },
       number: {
         type: String,
-
       },
       zipCode: {
         type: Number,
@@ -62,7 +61,6 @@ const userSchema = new mongoose.Schema({
     type: [
       {
         userId: String,
-
       },
     ],
   },
@@ -82,12 +80,7 @@ const userSchema = new mongoose.Schema({
     ],
   },
   displayPics: {
-    type: [String]
-
-      {
-        type: String,
-      },
-    ],
+    type: [String],
   },
   phoneNumber: {
     type: Number,
@@ -103,11 +96,30 @@ const userSchema = new mongoose.Schema({
     ],
   },
   location: {
-    type: [
-      {
+    type: {
+      city: {
         type: String,
       },
-    ],
+      state: {
+        type: String,
+      },
+      country: {
+        type: String,
+      },
+      suburb: {
+        type: String,
+      },
+      street: {
+        type: String,
+      },
+      number: {
+        type: String,
+      },
+      zipCode: {
+        type: Number,
+        maxlength: 6,
+      },
+    },
   },
   premium: {
     type: {
@@ -115,9 +127,21 @@ const userSchema = new mongoose.Schema({
         type: Boolean,
         default: false,
       },
-      status: {
+      expirationDate: {
+        type: Date,
+      },
+    },
+  },
+  socialNetwork: {
+    type: {
+      facebook: {
         type: String,
-        enum: ["isActive", "isExpired"],
+      },
+      instagram: {
+        type: String,
+      },
+      www: {
+        type: String,
       },
     },
   },
