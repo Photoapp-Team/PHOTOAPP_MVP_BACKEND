@@ -1,8 +1,21 @@
 const mongoose = require("mongoose");
 
 const packageSchema = new mongoose.Schema({
-  price: {
+  minPrice: {
     type: String,
+  },
+  maxPrice: {
+    type: String,
+  },
+  coverPhoto: {
+    type: String,
+  },
+  displayPhotos: {
+    type: [
+      {
+        type: String,
+      },
+    ],
   },
   photographerId: {
     type: String,
@@ -10,10 +23,10 @@ const packageSchema = new mongoose.Schema({
   description: {
     type: String,
   },
-  quantityPrevPhotos: {
+  minQuantityPrevPhotos: {
     type: Number,
   },
-  quantityFinalPhotos: {
+  maxQuantityFinalPhotos: {
     type: Number,
   },
   deliveryTime: {

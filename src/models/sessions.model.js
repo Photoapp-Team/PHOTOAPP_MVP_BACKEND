@@ -1,10 +1,14 @@
 const mongoose = require("mongoose");
+const { Schema } = mongoose;
+const Package = require("./packages.model");
+const User = require("./users.model");
 
 const sessionSchema = new mongoose.Schema({
   photographerId: {
     type: [
       {
-        type: String,
+        type: Schema.Types.ObjectId,
+        ref: "Users",
         required: true,
       },
     ],
@@ -12,7 +16,8 @@ const sessionSchema = new mongoose.Schema({
   userId: {
     type: [
       {
-        type: String,
+        type: Schema.Types.ObjectId,
+        ref: "Users",
         required: true,
       },
     ],
@@ -63,6 +68,9 @@ const sessionSchema = new mongoose.Schema({
   isPayed: {
     type: Boolean,
   },
+  price: {
+    type: String,
+  },
   createdAt: {
     type: Date,
     default: Date.now(),
@@ -77,7 +85,8 @@ const sessionSchema = new mongoose.Schema({
     type: String,
   },
   package: {
-    type: String,
+    type: Schema.Types.ObjectId,
+    ref: "Packages",
   },
   status: {
     type: [
@@ -88,19 +97,17 @@ const sessionSchema = new mongoose.Schema({
           "approved",
           "payed",
           "cancelled",
-          "onGoing",
           "preUploaded",
           "selected",
-          "editing",
           "delivered",
-          "downloaded",
-          "closeDate",
-          "expirationDate",
         ],
       },
     ],
   },
   closedAt: {
+    type: String,
+  },
+  ratingValue: {
     type: String,
   },
 });
