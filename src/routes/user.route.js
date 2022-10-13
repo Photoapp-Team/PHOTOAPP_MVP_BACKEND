@@ -6,11 +6,7 @@ const {
   editUser,
   removeUser,
 } = require("../usecases/user.usecase");
-const {
-  auth,
-  verifyOwner,
-  verifyUser,
-} = require("../middlewares/auth.middleware");
+const { auth, verifyUser } = require("../middlewares/auth.middleware");
 
 const router = express.Router();
 
