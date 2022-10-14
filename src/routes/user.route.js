@@ -33,7 +33,6 @@ router.get("/:id", verifyUser, async (request, response) => {
   try {
     const { params } = request;
     const user = await getUser(params.id);
-    response.status(201);
     response.json({
       success: true,
       data: {
