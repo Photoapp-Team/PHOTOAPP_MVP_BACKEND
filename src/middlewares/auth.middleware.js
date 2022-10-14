@@ -6,7 +6,8 @@ const auth = (request, response, next) => {
   try {
     const authorization = request.headers.authorization || "";
     const token = authorization.replace("Bearer ", "");
-    const verifiedToken = jwt.verify(token);
+    jwt.verify(token);
+
     next();
   } catch (error) {
     response.status(401);
