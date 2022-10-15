@@ -17,8 +17,14 @@ const editPhoto = (id, photoData) => {
     return editedPhoto;
 };
 
+const removePhoto = (id) => {
+    const photoDeleted = Photo.findByIdAndDelete(id);
+    return photoDeleted;
+};
+
 module.exports = {
     uploadPhoto,
     getPhoto,
     editPhoto,
+    removePhoto
 }

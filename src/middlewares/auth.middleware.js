@@ -23,9 +23,9 @@ const verifyUser = async (request, response, next) => {
   try {
     const authorization = request.headers.authorization || "";
     const token = authorization.replace("Bearer ", "");
-    const verifiedUser = jwt.verify(token);
-    const userId = await getUser(request.params.id);
-    if (verifiedUser.id === userId._id.toString()) {
+    const jwtPayload = jwt.verify(token);
+    const userFound = await getUser(request.params.id);
+    if (userFound && jwtPayload.id === userFound._id.toString()) {
       next();
     } else {
       throw createError(401, "No autorizado");

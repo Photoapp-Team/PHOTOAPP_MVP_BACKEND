@@ -47,10 +47,9 @@ router.get("/:id", async (request, response) => {
     }
 });
 
-router.patch("/:id", auth, async (request, response) => {
+router.patch("/:id", auth, verifyUser, async (request, response) => {
     try {
         const { params, body } = request;
-        console.log(params)
         const photo = await editPhoto(params.id, body);
         response.json({
             success: true,
@@ -58,6 +57,23 @@ router.patch("/:id", auth, async (request, response) => {
                 photo,
             },
             message: "Successfully edited photo",
+        });
+    } catch (error) {
+        response.status(400);
+        response.json({
+            success: false,
+            message: error.message,
+        });
+    }
+});
+
+router.delete("/:id" , auth, async (request, response) => {
+    try {
+        const { params } = request;
+        const photo = await removePhoto(params.id);
+        response.json({
+            success: true,
+            message: "Photo deleted successfully"
         });
     } catch (error) {
         response.status(400);
