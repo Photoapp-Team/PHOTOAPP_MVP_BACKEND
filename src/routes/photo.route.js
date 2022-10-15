@@ -47,7 +47,7 @@ router.get("/:id", async (request, response) => {
     }
 });
 
-router.patch("/:id", auth, verifyUser, async (request, response) => {
+router.patch("/:id", auth, async (request, response) => {
     try {
         const { params, body } = request;
         console.log(params)
