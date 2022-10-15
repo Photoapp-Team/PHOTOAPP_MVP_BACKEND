@@ -6,6 +6,7 @@ const server = express();
 //Routers
 const routerAuth = require("./routes/auth.route");
 const routerUser = require("./routes/user.route");
+const routerPackages = require("./routes/packages.route");
 
 // Middlewares
 server.use(cors());
@@ -13,6 +14,7 @@ server.use(express.json());
 
 server.use("/auth", routerAuth);
 server.use("/users", routerUser);
+server.use("/packages", routerPackages);
 
 server.get("/", async (request, response) => {
   response.json("Welcome to the Fotofi API");
