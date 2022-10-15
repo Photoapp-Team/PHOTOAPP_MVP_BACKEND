@@ -10,7 +10,15 @@ const getPhoto = (id) => {
     return photo;
 };
 
+const editPhoto = (id, photoData) => {
+    const editedPhoto = Photo.findByIdAndUpdate(id, photoData, {
+        returnDocument: "after",
+    });
+    return editedPhoto;
+};
+
 module.exports = {
     uploadPhoto,
     getPhoto,
+    editPhoto,
 }

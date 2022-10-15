@@ -1,11 +1,10 @@
 const { request, response, query } = require("express");
 const express = require("express");
 const {
-    createPhoto,
-    getPhoto,
-    removePhotos,
-    editPhotos,
     uploadPhoto,
+    getPhoto,
+    removePhoto,
+    editPhoto,
 } = require("../usecases/photos.usecase");
 const { auth, verifyUser } = require("../middlewares/auth.middleware");
 
@@ -44,6 +43,27 @@ router.get("/:id", async (request, response) => {
         response.json({
             success: false,
             message: error.massage,
+        });
+    }
+});
+
+router.patch("/:id", auth, verifyUser, async (request, response) => {
+    try {
+        const { params, body } = request;
+        console.log(params)
+        const photo = await editPhoto(params.id, body);
+        response.json({
+            success: true,
+            data: {
+                photo,
+            },
+            message: "Successfully edited photo",
+        });
+    } catch (error) {
+        response.status(400);
+        response.json({
+            success: false,
+            message: error.message,
         });
     }
 });
