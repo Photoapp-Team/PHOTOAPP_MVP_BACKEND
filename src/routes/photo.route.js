@@ -6,7 +6,7 @@ const {
     removePhoto,
     editPhoto,
 } = require("../usecases/photos.usecase");
-const { auth, verifyUser } = require("../middlewares/auth.middleware");
+const { auth, verifyUser, verifyPhotoOwner } = require("../middlewares/auth.middleware");
 
 const router = express.Router();
 
@@ -47,7 +47,7 @@ router.get("/:id", async (request, response) => {
     }
 });
 
-router.patch("/:id", auth, verifyUser, async (request, response) => {
+router.patch("/:id", auth, verifyPhotoOwner, async (request, response) => {
     try {
         const { params, body } = request;
         const photo = await editPhoto(params.id, body);

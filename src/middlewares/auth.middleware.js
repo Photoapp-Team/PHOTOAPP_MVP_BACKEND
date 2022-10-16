@@ -2,6 +2,7 @@ const jwt = require("../lib/jwt.lib");
 const createError = require("http-errors");
 const { getUser } = require("../usecases/user.usecase");
 const { getPackages, getPhotographerId } = require("../usecases/packages.usecase")
+const { getPhoto } = require("../usecases/photos.usecase");
 
 const auth = (request, response, next) => {
   try {
@@ -61,4 +62,25 @@ const verifyPackageOwner = async (request, response, next) => {
   }
 };
 
-module.exports = { auth, verifyUser, verifyPackageOwner };
+const verifyPhotoOwner = async (request, response, next) => {
+  try {
+    const authorization = request.headers.authorization || "";
+    const token = authorization.replace("Bearer ", "");
+    const verifiedUser = jwt.verify(token);
+    const photo = await getPhoto(request.params.id);
+    const { createdBy } = photo
+    if (verifiedUser.id === createdBy) {
+      next();
+    } else {
+      throw createError(401, "No eres creador de la foto");
+    }
+  } catch (error) {
+    response.status(401);
+    response.json({
+      success: false,
+      error: error.message,
+    });
+  }
+};
+
+module.exports = { auth, verifyUser, verifyPackageOwner, verifyPhotoOwner };
