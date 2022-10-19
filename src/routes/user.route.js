@@ -35,13 +35,7 @@ router.get("/:id", verifyUser, async (request, response) => {
     const user = await getUser(params.id);
     response.json({
       success: true,
-      data: {
-        userEmail: user.email,
-        userLastname: user.lastname,
-        userName: user.name,
-        userNickname: user.username,
-        userProfilepic: user.profilePic,
-      },
+      data: { user },
     });
   } catch (error) {
     response.status(400);
