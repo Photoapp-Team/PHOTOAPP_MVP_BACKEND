@@ -14,6 +14,9 @@ const serviceSchema = new mongoose.Schema({
     maxlength: 60,
     required: false,
   },
+  coverPhoto: {
+    type: String,
+  },
 });
 
 const Service = mongoose.model("services", serviceSchema);
