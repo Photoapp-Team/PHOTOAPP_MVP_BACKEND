@@ -24,26 +24,6 @@ const userSchema = new mongoose.Schema({
     unique: true,
     match: /^.*@.*\..*$/,
   },
-  address: {
-    type: {
-      city: {
-        type: String,
-      },
-      suburb: {
-        type: String,
-      },
-      street: {
-        type: String,
-      },
-      number: {
-        type: String,
-      },
-      zipCode: {
-        type: Number,
-        maxlength: 6,
-      },
-    },
-  },
   password: {
     type: String,
     required: true,
@@ -71,7 +51,7 @@ const userSchema = new mongoose.Schema({
   },
   role: {
     type: String,
-    enum: ["user", "photographer", "enterprise"],
+    enum: ["User", "Photographer", "Enterprise"],
   },
   photoTags: {
     type: [
@@ -146,6 +126,9 @@ const userSchema = new mongoose.Schema({
       },
     },
   },
+  coverPhoto: {
+    type: String,
+    },
 });
 
 const User = mongoose.model("users", userSchema);
