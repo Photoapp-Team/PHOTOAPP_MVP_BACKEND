@@ -7,8 +7,9 @@ const createUser = async (userData) => {
   return user;
 };
 
-const getUser = (id) => {
-  const user = User.findById(id);
+const getUser = async (id) => {
+  const user = await User.findById(id);
+  user.password = "";
   return user;
 };
 
