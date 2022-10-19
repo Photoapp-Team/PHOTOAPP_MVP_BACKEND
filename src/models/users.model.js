@@ -24,26 +24,6 @@ const userSchema = new mongoose.Schema({
     unique: true,
     match: /^.*@.*\..*$/,
   },
-  address: {
-    type: {
-      city: {
-        type: String,
-      },
-      suburb: {
-        type: String,
-      },
-      street: {
-        type: String,
-      },
-      number: {
-        type: String,
-      },
-      zipCode: {
-        type: Number,
-        maxlength: 6,
-      },
-    },
-  },
   password: {
     type: String,
     required: true,
