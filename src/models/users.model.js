@@ -51,7 +51,7 @@ const userSchema = new mongoose.Schema({
   },
   role: {
     type: String,
-    enum: ["user", "photographer", "enterprise"],
+    enum: ["User", "Photographer", "Enterprise"],
   },
   photoTags: {
     type: [
@@ -126,6 +126,9 @@ const userSchema = new mongoose.Schema({
       },
     },
   },
+  coverPhoto: {
+    type: String,
+    },
 });
 
 const User = mongoose.model("users", userSchema);
