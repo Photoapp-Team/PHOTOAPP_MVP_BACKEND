@@ -50,11 +50,11 @@ router.get("/:id", verifyUser, async (request, response) => {
 router.get("/", async (request, response) => {
   try {
     const { query } = request;
-    const posts = await getFilteredUser(query);
+    const users = await getFilteredUser(query);
     response.json({
       success: true,
       data: {
-        posts,
+        users,
       },
     });
   } catch (error) {
