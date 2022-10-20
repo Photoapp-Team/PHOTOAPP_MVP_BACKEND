@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 
+
 const server = express();
 
 //Routers
@@ -8,6 +9,8 @@ const routerAuth = require("./routes/auth.route");
 const routerUser = require("./routes/user.route");
 const routePhoto = require("./routes/photo.route")
 const routerPackages = require("./routes/packages.route");
+const routerPayments = require("./routes/payments.route");
+
 
 // Middlewares
 server.use(cors());

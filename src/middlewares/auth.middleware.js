@@ -2,6 +2,7 @@ const jwt = require("../lib/jwt.lib");
 const createError = require("http-errors");
 const { getUser } = require("../usecases/user.usecase");
 const { getPackages, getPhotographerId } = require("../usecases/packages.usecase")
+const paymentes = require("dotenv").config()
 
 const auth = (request, response, next) => {
   try {
