@@ -5,6 +5,7 @@ const {
   getUser,
   editUser,
   removeUser,
+  getFilteredUser,
 } = require("../usecases/user.usecase");
 const { auth, verifyUser } = require("../middlewares/auth.middleware");
 
@@ -36,6 +37,25 @@ router.get("/:id", verifyUser, async (request, response) => {
     response.json({
       success: true,
       data: { user },
+    });
+  } catch (error) {
+    response.status(400);
+    response.json({
+      success: false,
+      message: error.message,
+    });
+  }
+});
+
+router.get("/", async (request, response) => {
+  try {
+    const { query } = request;
+    const users = await getFilteredUser(query);
+    response.json({
+      success: true,
+      data: {
+        users,
+      },
     });
   } catch (error) {
     response.status(400);

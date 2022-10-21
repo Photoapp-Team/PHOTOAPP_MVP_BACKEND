@@ -13,6 +13,25 @@ const getUser = async (id) => {
   return user;
 };
 
+const getFilteredUser = async (filters) => {
+  const users = await User.find(filters);
+  users.forEach((user) => {
+    user.password = "";
+    user.email = "";
+    user.phoneNumber = "";
+  });
+
+  //! Para usar una forma mas elegante de proteger la informacion, en progreso
+  // const users = await User.find(
+  //   { filters },
+  //   "-password -phoneNumber -email",
+  //   function (err, docs) {
+  //     console.log("DOCUMENTOS", docs);
+  //     return docs;
+  //   }  );
+  return users;
+};
+
 const editUser = (id, userData) => {
   const editedUser = User.findByIdAndUpdate(id, userData, {
     returnDocument: "after",
@@ -30,4 +49,5 @@ module.exports = {
   getUser,
   editUser,
   removeUser,
+  getFilteredUser,
 };
