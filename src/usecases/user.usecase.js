@@ -8,28 +8,14 @@ const createUser = async (userData) => {
 };
 
 const getUser = async (id) => {
-  const user = await User.findById(id);
-  user.password = "";
+  const user = await User.findById(id).select("-password");
   return user;
 };
 
 const getFilteredUser = async (filters) => {
-  const users = await User.find(filters);
-  users.forEach((user) => {
-    user.password = "";
-    user.email = "";
-    user.phoneNumber = "";
-  });
+  const filteredUsers = await User.find(filters).select("-password -payments");
 
-  //! Para usar una forma mas elegante de proteger la informacion, en progreso
-  // const users = await User.find(
-  //   { filters },
-  //   "-password -phoneNumber -email",
-  //   function (err, docs) {
-  //     console.log("DOCUMENTOS", docs);
-  //     return docs;
-  //   }  );
-  return users;
+  return filteredUsers;
 };
 
 const editUser = (id, userData) => {
