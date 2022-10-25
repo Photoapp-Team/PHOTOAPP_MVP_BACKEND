@@ -3,10 +3,11 @@ const multer = require("multer");
 const storage = multer.memoryStorage();
 
 const fileFilter = (request, file, cb) => {
+  // if (file.fieldname === )
   if (file.mimetype.split("/")[0] === "image") {
     cb(null, true);
   } else {
-    cb(new multer.MulterError("LIMIT_FILE_SIZE"), false);
+    cb(console.log("error"), false);
   }
 };
 
@@ -14,12 +15,11 @@ const upload = multer({
   storage,
   fileFilter,
   limits: { fileSize: 100000000000000 },
-  files: 2,
 });
 
 const multiUpload = upload.fields([
-  { name: "profilePic", maxCount: 1 },
-  { name: "coverPhoto", maxCount: 1 },
+  { name: "profilePic" },
+  { name: "coverPhoto" },
 ]);
 
 module.exports = { multiUpload, upload };

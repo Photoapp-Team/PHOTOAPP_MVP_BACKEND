@@ -5,22 +5,56 @@ const uuid = require("uuid").v4;
 exports.s3UploadProfile = async (files, id) => {
   const S3client = new S3Client();
 
-  const params = files.map((file) => {
+  const paramsS3 = Object.entries(files).map(([fieldname, files]) => {
+    const file = files[0];
+    const key = `uploads/${id}/${uuid()}-${file.originalname}`;
     return {
       Bucket: process.env.AWS_BUCKET_PROFILE_NAME,
-      Key: `uploads/${id}/${uuid()}-${file.originalname}`,
+      Key: key,
       Body: file.buffer,
+      fieldname: file.fieldname,
     };
   });
-  return await Promise.all(
-    params.map((param) => S3client.send(new PutObjectCommand(param)))
+  const s3ObjectResponse = await Promise.all(
+    paramsS3.map((param) => S3client.send(new PutObjectCommand(param)))
   );
+  return { s3ObjectResponse, paramsS3 };
 };
 
-//! Esta es mi logica para actualizar al usuario, pero no lo pude meter en el map, si lograra que la función me regresara las Keys
-//! solo sería llamar el editUser en un useCase y ya.
-// const body = {};
-//     const user = editUser(
-//       id,
-//       `${file.fieldname}: https://s3-fotofi-backend-profile-uploads.s3.amazonaws.com/uploads/${key}`
-//     );
+exports.s3UploadPackage = async (files, id) => {
+  const S3client = new S3Client();
+
+  const paramsS3 = files.map((file) => {
+    const key = `uploads/${id}/${uuid()}-${file.originalname}`;
+
+    return {
+      Bucket: process.env.AWS_BUCKET_PACKAGE_NAME,
+      Key: key,
+      Body: file.buffer,
+      fieldname: file.fieldname,
+    };
+  });
+  const s3ObjectResponse = await Promise.all(
+    paramsS3.map((param) => S3client.send(new PutObjectCommand(param)))
+  );
+  return { s3ObjectResponse, paramsS3 };
+};
+
+exports.s3UploadSession = async (files, id, route) => {
+  const S3client = new S3Client();
+
+  const paramsS3 = files.map((file) => {
+    const key = `uploads/${id}/${route}/${uuid()}-${file.originalname}`;
+
+    return {
+      Bucket: process.env.AWS_BUCKET_SESSION_NAME,
+      Key: key,
+      Body: file.buffer,
+      fieldname: file.fieldname,
+    };
+  });
+  const s3ObjectResponse = await Promise.all(
+    paramsS3.map((param) => S3client.send(new PutObjectCommand(param)))
+  );
+  return { s3ObjectResponse, paramsS3 };
+};
