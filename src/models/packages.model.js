@@ -4,12 +4,15 @@ const { Schema } = mongoose;
 const packageSchema = new mongoose.Schema({
   minPrice: {
     type: String,
+    required: true,
   },
   maxPrice: {
     type: String,
+    required: true,
   },
   coverPhoto: {
     type: String,
+    required: true,
   },
   displayPhotos: {
     type: [
@@ -17,24 +20,40 @@ const packageSchema = new mongoose.Schema({
         type: String,
       },
     ],
+    required: true,
   },
   photographerId: {
-    type: String,
+    type: Schema.Types.ObjectId,
+    ref: "Users",
+    required: true,
   },
   description: {
     type: String,
+    required: true,
   },
   minQuantityPrevPhotos: {
     type: Number,
+    required: true,
+  },
+  maxQuantityPrevPhotos: {
+    type: Number,
+    required: true,
+  },
+  minQuantityFinalPhotos: {
+    type: Number,
+    required: true,
   },
   maxQuantityFinalPhotos: {
     type: Number,
+    required: true,
   },
   deliveryTime: {
     type: String,
+    required: true,
   },
-  name: {
+  serviceCategory: {
     type: String,
+    required: true,
   },
 });
 
