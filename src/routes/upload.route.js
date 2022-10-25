@@ -18,7 +18,6 @@ router.post("/profile/:id", multiUpload, async (request, response) => {
         [paramS3.fieldname]: `https://s3-fotofi-backend-profile-uploads.s3.amazonaws.com/${paramS3.Key}`,
       };
     }, {});
-    console.log({ userFieldsToUpdate });
     const updatedUser = await editUser(id, userFieldsToUpdate);
     return response.json({ status: "success" });
   } catch (error) {
