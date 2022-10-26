@@ -11,7 +11,7 @@ mongoose
   .then(() => {
     console.log("Conectado a la base de datos de mongo");
     app.listen(8080, () => {
-      console.log("Server listening...");
+      console.log("Server listening on port 8080...");
     });
   })
   .catch((err) => {

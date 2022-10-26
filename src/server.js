@@ -10,6 +10,7 @@ const routePhoto = require("./routes/photo.route");
 const routeService = require("./routes/service.route");
 const routerPackages = require("./routes/packages.route");
 const routerSessions = require("./routes/session.route");
+const routerImagesUpload = require("./routes/upload.route");
 
 // Middlewares
 server.use(cors());
@@ -21,6 +22,7 @@ server.use("/photo", routePhoto);
 server.use("/services", routeService);
 server.use("/packages", routerPackages);
 server.use("/sessions", routerSessions);
+server.use("/upload", routerImagesUpload);
 
 server.get("/", async (request, response) => {
   response.json("Welcome to the Fotofi API");
