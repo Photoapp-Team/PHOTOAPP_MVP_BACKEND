@@ -4,6 +4,19 @@ const createNewSession = async (SessionData) => {
   const session = Session.create({ ...SessionData });
   return session;
 };
+const getSessionsWhitUserId = (id) => {
+  const sessions = Session.find({
+    userId: id,
+  });
+  return sessions;
+};
+
+const getSessionsWhitPhotographerId = (id) => {
+  const sessions = Session.find({
+    photographerId: id,
+  });
+  return sessions;
+};
 
 // const getService = (id) => {
 //   const service = Service.findById(id);
@@ -29,6 +42,8 @@ const createNewSession = async (SessionData) => {
 
 module.exports = {
   createNewSession,
+  getSessionsWhitPhotographerId,
+  getSessionsWhitUserId,
   // getService,
   // editService,
   // removeService,
