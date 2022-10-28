@@ -67,13 +67,11 @@ const sessionSchema = new mongoose.Schema({
   },
   isPayed: {
     type: Boolean,
+    default: false,
+    required: true,
   },
   price: {
     type: String,
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now(),
   },
   startDate: {
     type: Date,
@@ -89,20 +87,38 @@ const sessionSchema = new mongoose.Schema({
     ref: "Packages",
   },
   status: {
-    type: [
-      {
-        type: String,
-        enum: [
-          "scheduled",
-          "approved",
-          "payed",
-          "cancelled",
-          "preUploaded",
-          "selected",
-          "delivered",
-        ],
+    type: {
+      requested: { type: Date, default: Date.now(), required: true },
+      scheduled: {
+        type: Date,
+        required: false,
       },
-    ],
+      approved: {
+        type: Date,
+        required: false,
+      },
+      payed: {
+        type: Date,
+        required: false,
+      },
+      cancelled: {
+        type: Date,
+        required: false,
+      },
+      preUploaded: {
+        type: Date,
+        required: false,
+      },
+      selected: {
+        type: Date,
+        required: false,
+      },
+      delivered: {
+        type: Date,
+        required: false,
+      },
+    },
+    default: {},
   },
   closedAt: {
     type: String,

@@ -5,6 +5,8 @@ const {
   getUser,
   editUser,
   removeUser,
+  getFilteredUser,
+  getUserBasicInfo,
 } = require("../usecases/user.usecase");
 const { auth, verifyUser } = require("../middlewares/auth.middleware");
 
@@ -29,18 +31,51 @@ router.post("/", async (request, response) => {
   }
 });
 
-router.get("/:id", verifyUser, async (request, response) => {
+router.get("/:id", async (request, response) => {
   try {
     const { params } = request;
     const user = await getUser(params.id);
     response.json({
       success: true,
+      data: { user },
+    });
+  } catch (error) {
+    response.status(400);
+    response.json({
+      success: false,
+      message: error.message,
+    });
+  }
+});
+
+router.get("/", async (request, response) => {
+  try {
+    const { query } = request;
+    const users = await getFilteredUser(query);
+    response.json({
+      success: true,
       data: {
-        userEmail: user.email,
-        userLastname: user.lastname,
-        userName: user.name,
-        userNickname: user.username,
-        userProfilepic: user.profilePic,
+        users,
+      },
+    });
+  } catch (error) {
+    response.status(400);
+    response.json({
+      success: false,
+      message: error.message,
+    });
+  }
+});
+
+router.get("/basicinfo/:id", async (request, response) => {
+  try {
+    const { params } = request;
+
+    user = await getUserBasicInfo(params.id);
+    response.json({
+      success: true,
+      data: {
+        user,
       },
     });
   } catch (error) {

@@ -2,18 +2,18 @@ const Package = require("../models/packages.model");
 const bcrypt = require("bcrypt");
 
 const createPackage = async (packageData) => {
-  const package = await Package.create( packageData )
+  const package = await Package.create(packageData);
   return package;
 };
 
 const getAllPackages = (filters) => {
-    const packages = Package.find(filters);
-    return packages;
+  const packages = Package.find(filters);
+  return packages;
 };
 
 const getPhotographerId = (id) => {
-    const package = Package.find({photographerId:id});
-    return package;
+  const package = Package.find({ photographerId: id });
+  return package;
 };
 
 const getPackage = (id) => {
@@ -26,10 +26,16 @@ const removePackage = (id) => {
   return packageRemove;
 };
 
+const editPackage = (id, packageData) => {
+  const editedPackage = Package.findByIdAndUpdate(id, packageData, { returnDocument: "after" });
+  return editedPackage;
+};
+
 module.exports = {
   createPackage,
   getAllPackages,
   getPhotographerId,
   getPackage,
   removePackage,
+  editPackage,
 };

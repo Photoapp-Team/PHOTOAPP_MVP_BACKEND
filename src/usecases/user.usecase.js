@@ -7,9 +7,22 @@ const createUser = async (userData) => {
   return user;
 };
 
-const getUser = (id) => {
-  const user = User.findById(id);
+const getUser = async (id) => {
+  const user = await User.findById(id).select("-password");
   return user;
+};
+
+const getUserBasicInfo = async (id) => {
+  const user = await User.findById(id).select("username profilePic location");
+  user._doc.location.street = "";
+  user._doc.location.number = "";
+  return user;
+};
+
+const getFilteredUser = async (filters) => {
+  const filteredUsers = await User.find(filters).select("-password -payments");
+
+  return filteredUsers;
 };
 
 const editUser = (id, userData) => {
@@ -29,4 +42,6 @@ module.exports = {
   getUser,
   editUser,
   removeUser,
+  getFilteredUser,
+  getUserBasicInfo,
 };
