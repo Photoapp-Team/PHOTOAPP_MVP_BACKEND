@@ -1,7 +1,11 @@
 const { request } = require("express");
 const express = require("express");
 const { s3UploadProfile, s3UploadPackage, s3UploadSession } = require("../lib/s3Service");
-const { upload, multiUpload } = require("../middlewares/uploadImages.middleware");
+const {
+  upload,
+  multiUpload,
+  multiUploadPackage,
+} = require("../middlewares/uploadImages.middleware");
 const { editPackage } = require("../usecases/packages.usecase");
 const { editUser } = require("../usecases/user.usecase");
 const router = express.Router();
@@ -29,19 +33,29 @@ router.post("/profile/:id", multiUpload, async (request, response) => {
   }
 });
 
-router.post("/packages/:id", upload.array("displayPhotos"), async (request, response) => {
+router.post("/packages/:id", multiUploadPackage, async (request, response) => {
   try {
     const { params } = request;
     const { id } = params;
     const { s3ObjectResponse, paramsS3 } = await s3UploadPackage(request.files, id);
     const displayPhotos = paramsS3.reduce((accum, paramS3) => {
-      return [
+      if (paramS3.fieldname === "coverPhoto") {
+        return {
+          ...accum,
+          [paramS3.fieldname]: `https://s3-fotofi-backend-package-uploads.s3.amazonaws.com/${paramS3.Key}`,
+        };
+      }
+      return {
         ...accum,
-        `https://s3-fotofi-backend-package-uploads.s3.amazonaws.com/${paramS3.Key}`,
-      ];
-    }, []);
-    const updatedPackage = await editPackage(id, { displayPhotos });
-    return response.json({ status: "success" });
+        [paramS3.fieldname]: [
+          ...(accum[paramS3.fieldname] ? accum[paramS3.fieldname] : []),
+          `https://s3-fotofi-backend-package-uploads.s3.amazonaws.com/${paramS3.Key}`,
+        ],
+      };
+    }, {});
+
+    const updatedPackage = await editPackage(id, { ...displayPhotos });
+    return response.json({ status: "success", updatedPackage });
   } catch (error) {
     response.status(400);
     response.json({

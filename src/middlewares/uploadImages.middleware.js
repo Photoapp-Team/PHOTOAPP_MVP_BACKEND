@@ -17,9 +17,8 @@ const upload = multer({
   limits: { fileSize: 100000000000000 },
 });
 
-const multiUpload = upload.fields([
-  { name: "profilePic" },
-  { name: "coverPhoto" },
-]);
+const multiUpload = upload.fields([{ name: "profilePic" }, { name: "coverPhoto" }]);
 
-module.exports = { multiUpload, upload };
+const multiUploadPackage = upload.fields([{ name: "coverPhoto" }, { name: "displayPhotos" }]);
+
+module.exports = { multiUpload, upload, multiUploadPackage };

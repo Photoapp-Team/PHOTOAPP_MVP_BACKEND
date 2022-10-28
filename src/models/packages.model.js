@@ -12,7 +12,6 @@ const packageSchema = new mongoose.Schema({
   },
   coverPhoto: {
     type: String,
-    required: true,
   },
   displayPhotos: {
     type: [
@@ -20,7 +19,6 @@ const packageSchema = new mongoose.Schema({
         type: String,
       },
     ],
-    required: true,
   },
   photographerId: {
     type: Schema.Types.ObjectId,
