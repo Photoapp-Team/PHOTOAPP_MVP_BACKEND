@@ -1,11 +1,11 @@
 const { request, response, query } = require("express");
 const express = require("express");
+const { getUser } = require("../usecases/user.usecase");
+
 const {
   createNewSession,
-  // getService,
-  // editService,
-  // removeService,
-  // getAllServices,
+  getSessionsWhitPhotographerId,
+  getSessionsWhitUserId,
 } = require("../usecases/sessions.usecase");
 
 const router = express.Router();
@@ -27,79 +27,51 @@ router.post("/", async (request, response) => {
   }
 });
 
-// router.get("/:id", async (request, response) => {
-//   try {
-//     const { params } = request;
-//     const service = await getService(params.id);
-//     response.json({
-//       success: true,
-//       data: {
-//         service,
-//       },
-//     });
-//   } catch (error) {
-//     response.status(400);
-//     response.json({
-//       success: false,
-//       message: error.massage,
-//     });
-//   }
-// });
+router.get("/photographerId/:id", async (request, response) => {
+  try {
+    const { params } = request;
+    const sessions = await getSessionsWhitPhotographerId(params.id);
+    response.json({
+      success: true,
+      data: {
+        sessions,
+      },
+    });
+  } catch (error) {
+    response.status(400);
+    response.json({
+      success: false,
+      message: error.message,
+    });
+  }
+});
 
-// router.get("/", async (request, response) => {
-//   try {
-//     const { params } = request;
-//     const services = await getAllServices();
-//     response.json({
-//       success: true,
-//       data: {
-//         services,
-//       },
-//     });
-//   } catch (error) {
-//     response.status(400);
-//     response.json({
-//       success: false,
-//       message: error.massage,
-//     });
-//   }
-// });
+router.get("/userId/:id", async (request, response) => {
+  try {
+    const { params } = request;
+    const user = await getUser(params.id);
 
-// router.patch("/:id", async (request, response) => {
-//   try {
-//     const { params, body } = request;
-//     const service = await editService(params.id, body);
-//     response.json({
-//       success: true,
-//       data: {
-//         service,
-//       },
-//       message: "Successfully edited service",
-//     });
-//   } catch (error) {
-//     response.status(400);
-//     response.json({
-//       success: false,
-//       message: error.message,
-//     });
-//   }
-// });
-
-// router.delete("/:id", async (request, response) => {
-//   try {
-//     const { params } = request;
-//     const photo = await removeService(params.id);
-//     response.json({
-//       success: true,
-//       message: "Service deleted successfully",
-//     });
-//   } catch (error) {
-//     response.status(400);
-//     response.json({
-//       success: false,
-//       message: error.message,
-//     });
-//   }
-// });
+    let sessions = {};
+    if (user?.role == "User") {
+      sessions = await getSessionsWhitUserId(params.id);
+    } else {
+      sessions = await getSessionsWhitPhotographerId(params.id);
+    }
+    if (user?.role) {
+      response.json({
+        success: true,
+        data: {
+          sessions,
+        },
+      });
+    }
+  } catch (error) {
+    response.status(400);
+    response.json({
+      success: false,
+      message: error.message,
+    });
+  }
+});
 
 module.exports = router;

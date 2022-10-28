@@ -12,6 +12,13 @@ const getUser = async (id) => {
   return user;
 };
 
+const getUserBasicInfo = async (id) => {
+  const user = await User.findById(id).select("username profilePic location");
+  user._doc.location.street = "";
+  user._doc.location.number = "";
+  return user;
+};
+
 const getFilteredUser = async (filters) => {
   const filteredUsers = await User.find(filters).select("-password -payments");
 
@@ -36,4 +43,5 @@ module.exports = {
   editUser,
   removeUser,
   getFilteredUser,
+  getUserBasicInfo,
 };
