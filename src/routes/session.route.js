@@ -54,7 +54,7 @@ router.get("/userId/:id", async (request, response) => {
   try {
     const { params } = request;
     const user = await getUser(params.id);
-    console.log(user.role);
+
     let sessions = {};
     if (user?.role == "User") {
       sessions = await getSessionsWhitUserId(params.id);
