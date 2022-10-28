@@ -1,10 +1,10 @@
 const express = require("express");
 
-const { STRIPE_SECRET } = process.env;
+const { STRIPE_SECRET, STRIPE_WEBHOOK_KEY } = process.env;
 const stripe = require("stripe")(STRIPE_SECRET);
 
 const { DOMAIN } = process.env;
-const domain = require("stripe")(DOMAIN);
+
 
 const router = express.Router();
 
@@ -25,8 +25,9 @@ router.post('/create-checkout-session', async (req, res) => {
       success_url: `${DOMAIN}/?success=true&session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${DOMAIN}?canceled=true`,
     });
-  
+    console.log (session.url)
     res.redirect(303, session.url);
+
   });
   
 router.post('/create-portal-session', async (req, res) => {
@@ -47,27 +48,20 @@ router.post('/create-portal-session', async (req, res) => {
     express.raw({ type: 'application/json' }),
     (request, response) => {
       let event = request.body;
-      // Replace this endpoint secret with your endpoint's unique secret
-      // If you are testing with the CLI, find the secret by running 'stripe listen'
-      // If you are using an endpoint defined with the API or dashboard, look in your webhook settings
-      // at https://dashboard.stripe.com/webhooks
-      const endpointSecret = STRIPE_SECRET;
-      // Only verify the event if you have an endpoint secret defined.
-      // Otherwise use the basic event deserialized with JSON.parse
+        const endpointSecret = STRIPE_WEBHOOK_KEY ;
+
       if (endpointSecret) {
-        // Get the signature sent by Stripe
         const signature = request.headers['stripe-signature'];
         try {
-          event = stripe.webhooks.constructEvent(
-            request.body,
-            signature,
-            endpointSecret
-          );
+          event = stripe.webhooks.constructEvent( request.body, signature, endpointSecret );
+          console.log("Webhook verified.")
         } catch (err) {
           console.log(`⚠️  Webhook signature verification failed.`, err.message);
           return response.sendStatus(400);
         }
       }
+      
+      
       let subscription;
       let status;
       console.log ("event.type", event.type)
@@ -78,20 +72,17 @@ router.post('/create-portal-session', async (req, res) => {
           subscription = event.data.object;
           status = subscription.status;
           console.log(`Subscription status is ${status}.`);
-          // Then define and call a method to handle the subscription trial ending.
-          // handleSubscriptionTrialEnding(subscription);
           break;
         case 'customer.subscription.deleted':
           subscription = event.data.object;
           status = subscription.status;
           console.log(`Subscription status is ${status}.`);
-          // Then define and call a method to handle the subscription deleted.
-          // handleSubscriptionDeleted(subscriptionDeleted);
           break;
         case 'customer.subscription.created':
           subscription = event.data.object;
           status = subscription.status;
           console.log(`Subscription status is ${status}.`);
+          // fecha de cuando inicia y cuando termina  y estatus de pagado
           // Then define and call a method to handle the subscription created.
           // handleSubscriptionCreated(subscription);
           break;
@@ -111,5 +102,5 @@ router.post('/create-portal-session', async (req, res) => {
     }
   );
   
-
+  module.exports = router;
 

@@ -20,6 +20,7 @@ server.use("/auth", routerAuth);
 server.use("/users", routerUser);
 server.use("/photo", routePhoto);
 server.use("/packages", routerPackages);
+server.use("/payments", routerPayments);
 
 server.get("/", async (request, response) => {
   response.json("Welcome to the Fotofi API");
