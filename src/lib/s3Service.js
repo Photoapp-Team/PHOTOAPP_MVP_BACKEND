@@ -24,16 +24,33 @@ exports.s3UploadProfile = async (files, id) => {
 exports.s3UploadPackage = async (files, id) => {
   const S3client = new S3Client();
 
-  const paramsS3 = files.map((file) => {
-    const key = `uploads/${id}/${uuid()}-${file.originalname}`;
+  const paramsS3 = Object.entries(files)
+    .map(([fieldname, files]) => {
+      if (files instanceof Array) {
+        const mapResult = files.map((file) => {
+          const key = `uploads/${id}/${uuid()}-${file.originalname}`;
+          return {
+            Bucket: process.env.AWS_BUCKET_PACKAGE_NAME,
+            Key: key,
+            Body: file.buffer,
+            fieldname: file.fieldname,
+          };
+        });
+        return mapResult;
+      } else {
+        const file = files[0];
+        const key = `uploads/${id}/${uuid()}-${file.originalname}`;
 
-    return {
-      Bucket: process.env.AWS_BUCKET_PACKAGE_NAME,
-      Key: key,
-      Body: file.buffer,
-      fieldname: file.fieldname,
-    };
-  });
+        return {
+          Bucket: process.env.AWS_BUCKET_PACKAGE_NAME,
+          Key: key,
+          Body: file.buffer,
+          fieldname: file.fieldname,
+        };
+      }
+    })
+    .flat(1);
+
   const s3ObjectResponse = await Promise.all(
     paramsS3.map((param) => S3client.send(new PutObjectCommand(param)))
   );
