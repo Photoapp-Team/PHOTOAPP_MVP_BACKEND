@@ -6,6 +6,7 @@ const {
   createNewSession,
   getSessionsWhitPhotographerId,
   getSessionsWhitUserId,
+  getUniqueSession,
 } = require("../usecases/sessions.usecase");
 
 const router = express.Router();
@@ -65,6 +66,23 @@ router.get("/userId/:id", async (request, response) => {
         },
       });
     }
+  } catch (error) {
+    response.status(400);
+    response.json({
+      success: false,
+      message: error.message,
+    });
+  }
+});
+
+router.get("/session/:id", async (request, response) => {
+  try {
+    const { params } = request;
+    const session = await getUniqueSession(params.id);
+    response.json({
+      success: true,
+      data: { session },
+    });
   } catch (error) {
     response.status(400);
     response.json({

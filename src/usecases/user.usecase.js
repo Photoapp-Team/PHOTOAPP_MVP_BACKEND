@@ -13,7 +13,7 @@ const getUser = async (id) => {
 };
 
 const getUserBasicInfo = async (id) => {
-  const user = await User.findById(id).select("username profilePic location");
+  const user = await User.findById(id).select("username profilePic location name lastname");
   user._doc.location.street = "";
   user._doc.location.number = "";
   return user;

@@ -103,7 +103,7 @@ router.post("/sessions/final/:id", upload.array("finalPics"), async (request, re
         name: name[0],
       };
     });
-    const updatedSession = await editSession(id, finalPics);
+    const updatedSession = await editSession(id, { finalPics });
     return response.json({ status: "success", updatedSession });
   } catch (error) {
     response.status(400);

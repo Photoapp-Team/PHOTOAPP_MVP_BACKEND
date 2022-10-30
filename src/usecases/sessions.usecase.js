@@ -25,10 +25,10 @@ const editSession = (id, SessionData) => {
   return editedSession;
 };
 
-// const getService = (id) => {
-//   const service = Service.findById(id);
-//   return service;
-// };
+const getUniqueSession = (id) => {
+  const session = Session.findById(id);
+  return session;
+};
 
 // const getAllServices = () => {
 //   const services = Service.find();
@@ -45,7 +45,7 @@ module.exports = {
   getSessionsWhitPhotographerId,
   getSessionsWhitUserId,
   editSession,
-  // getService,
+  getUniqueSession,
   // removeService,
   // getAllServices,
 };
