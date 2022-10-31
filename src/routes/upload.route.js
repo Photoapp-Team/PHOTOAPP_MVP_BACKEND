@@ -8,6 +8,7 @@ const {
 } = require("../middlewares/uploadImages.middleware");
 const { editPackage } = require("../usecases/packages.usecase");
 const { editUser } = require("../usecases/user.usecase");
+const { editSession } = require("../usecases/sessions.usecase");
 const router = express.Router();
 const app = express();
 
@@ -23,7 +24,7 @@ router.post("/profile/:id", multiUpload, async (request, response) => {
       };
     }, {});
     const updatedUser = await editUser(id, userFieldsToUpdate);
-    return response.json({ status: "success" });
+    return response.json({ status: "success", updatedUser });
   } catch (error) {
     response.status(400);
     response.json({
@@ -65,19 +66,21 @@ router.post("/packages/:id", multiUploadPackage, async (request, response) => {
   }
 });
 
-router.post("/sessions/prev/:id", upload.array("files"), async (request, response) => {
+router.post("/sessions/prev/:id", upload.array("previewPics"), async (request, response) => {
   try {
     const { params } = request;
     const route = "prev";
     const { id } = params;
     const { s3ObjectResponse, paramsS3 } = await s3UploadSession(request.files, id, route);
     const previewPics = paramsS3.map((paramS3) => {
+      const name = paramS3.Key.split("/").reverse();
       return {
         link: `https://s3-fotofi-backend-session-uploads.s3.amazonaws.com/${paramS3.Key}`,
+        name: name[0],
       };
     });
-    // const updatedSession = await editSession(id, previewPics)
-    return response.json({ status: "success" });
+    const updatedSession = await editSession(id, { previewPics });
+    return response.json({ status: "success", updatedSession });
   } catch (error) {
     response.status(400);
     response.json({
@@ -87,19 +90,21 @@ router.post("/sessions/prev/:id", upload.array("files"), async (request, respons
   }
 });
 
-router.post("/sessions/final/:id", upload.array("files"), async (request, response) => {
+router.post("/sessions/final/:id", upload.array("finalPics"), async (request, response) => {
   try {
     const { params } = request;
     const route = "final";
     const { id } = params;
     const { s3ObjectResponse, paramsS3 } = await s3UploadSession(request.files, id, route);
     const finalPics = paramsS3.map((paramS3) => {
+      const name = paramS3.Key.split("/").reverse();
       return {
         link: `https://s3-fotofi-backend-session-uploads.s3.amazonaws.com/${paramS3.Key}`,
+        name: name[0],
       };
     });
-    // const updatedSession = await editSession(id, finalPics)
-    return response.json({ status: "success" });
+    const updatedSession = await editSession(id, { finalPics });
+    return response.json({ status: "success", updatedSession });
   } catch (error) {
     response.status(400);
     response.json({
