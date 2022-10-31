@@ -7,6 +7,7 @@ const {
   getSessionsWhitPhotographerId,
   getSessionsWhitUserId,
   getUniqueSession,
+  editSession,
 } = require("../usecases/sessions.usecase");
 
 const router = express.Router();
@@ -82,6 +83,26 @@ router.get("/session/:id", async (request, response) => {
     response.json({
       success: true,
       data: { session },
+    });
+  } catch (error) {
+    response.status(400);
+    response.json({
+      success: false,
+      message: error.message,
+    });
+  }
+});
+
+router.patch("/session/:id", async (request, response) => {
+  try {
+    const { params, body } = request;
+    const session = await editSession(params.id, body);
+    response.json({
+      success: true,
+      data: {
+        session,
+      },
+      message: "Successfully edited session",
     });
   } catch (error) {
     response.status(400);

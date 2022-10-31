@@ -44,6 +44,21 @@ const sessionSchema = new mongoose.Schema({
       },
     ],
   },
+  selectedPics: {
+    type: [
+      {
+        link: {
+          type: String,
+        },
+        comment: {
+          type: String,
+        },
+        name: {
+          type: String,
+        },
+      },
+    ],
+  },
   finalPics: {
     type: [
       {
