@@ -19,6 +19,11 @@ const getUserBasicInfo = async (id) => {
   return user;
 };
 
+const getUserRate = async (id) => {
+  const user = await User.findById(id).select("ratedSessions");
+  return user;
+};
+
 const getFilteredUser = async (filters) => {
   const filteredUsers = await User.find(filters).select("-password -payments");
 
@@ -44,4 +49,5 @@ module.exports = {
   removeUser,
   getFilteredUser,
   getUserBasicInfo,
+  getUserRate,
 };

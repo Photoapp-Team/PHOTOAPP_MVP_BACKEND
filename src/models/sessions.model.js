@@ -139,7 +139,16 @@ const sessionSchema = new mongoose.Schema({
     type: String,
   },
   ratingValue: {
-    type: String,
+    type: {
+      rating: {
+        type: Number,
+        required: false,
+      },
+      comments: {
+        type: String,
+        required: false,
+      },
+    },
   },
 });
 
