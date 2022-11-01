@@ -1,18 +1,20 @@
 const express = require("express");
-
+const env = require ('react-dotenv')
 const { STRIPE_SECRET, STRIPE_WEBHOOK_KEY } = process.env;
-const stripe = require("stripe")(STRIPE_SECRET);
+const stripe = require("stripe")(env.STRIPE_SECRET);
 
-const { DOMAIN } = process.env;
+const { DOMAIN } = env.DOMAIN;
 
 
 const router = express.Router();
+router.use(express.static('.'));
 
 router.post('/create-checkout-session', async (req, res) => {
+    const arrayProducts= [];
     const prices = await stripe.prices.list({
-      lookup_keys: [req.body.lookup_key],
-      expand: ['data.product'],
-    });
+        lookup_keys: [req.body.lookup_key],
+        expand: ['data.product'],
+      });
     const session = await stripe.checkout.sessions.create({
       billing_address_collection: 'auto',
       line_items: [
@@ -22,8 +24,8 @@ router.post('/create-checkout-session', async (req, res) => {
         },
       ],
       mode: 'subscription',
-      success_url: `${DOMAIN}/?success=true&session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${DOMAIN}?canceled=true`,
+      success_url: `${DOMAIN}/payment_sucess`, 
+      cancel_url: `${DOMAIN}/payment_failed`,
     });
     console.log (session.url)
     res.redirect(303, session.url);
