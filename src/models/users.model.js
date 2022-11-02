@@ -136,7 +136,7 @@ const userSchema = new mongoose.Schema({
           type: String,
         },
         rate: {
-          type: String,
+          type: Number,
         },
       },
     ],
