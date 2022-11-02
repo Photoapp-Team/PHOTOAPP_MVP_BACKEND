@@ -150,6 +150,18 @@ const sessionSchema = new mongoose.Schema({
       },
     },
   },
+  deliveryTime: {
+    type: String,
+  },
+  price: {
+    type: String,
+  },
+  quantityPrevPhotos: {
+    type: String,
+  },
+  quantityFinalPhotos: {
+    type: String,
+  },
 });
 
 const Session = mongoose.model("sessions", sessionSchema);
