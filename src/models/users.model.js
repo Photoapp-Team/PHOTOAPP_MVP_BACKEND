@@ -128,7 +128,19 @@ const userSchema = new mongoose.Schema({
   },
   coverPhoto: {
     type: String,
-    },
+  },
+  ratedSessions: {
+    type: [
+      {
+        sessionId: {
+          type: String,
+        },
+        rate: {
+          type: Number,
+        },
+      },
+    ],
+  },
 });
 
 const User = mongoose.model("users", userSchema);

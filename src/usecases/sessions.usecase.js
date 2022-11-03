@@ -18,34 +18,22 @@ const getSessionsWhitPhotographerId = (id) => {
   return sessions;
 };
 
-// const getService = (id) => {
-//   const service = Service.findById(id);
-//   return service;
-// };
+const editSession = (id, SessionData) => {
+  const editedSession = Session.findByIdAndUpdate(id, SessionData, {
+    returnDocument: "after",
+  });
+  return editedSession;
+};
 
-// const getAllServices = () => {
-//   const services = Service.find();
-//   return services;
-// };
-
-// const editService = (id, ServiceData) => {
-//   const editedService = Service.findByIdAndUpdate(id, ServiceData, {
-//     returnDocument: "after",
-//   });
-//   return editedService;
-// };
-
-// const removeService = (id) => {
-//   const serviceDeleted = Service.findByIdAndDelete(id);
-//   return serviceDeleted;
-// };
+const getUniqueSession = (id) => {
+  const session = Session.findById(id);
+  return session;
+};
 
 module.exports = {
   createNewSession,
   getSessionsWhitPhotographerId,
   getSessionsWhitUserId,
-  // getService,
-  // editService,
-  // removeService,
-  // getAllServices,
+  editSession,
+  getUniqueSession,
 };

@@ -44,6 +44,21 @@ const sessionSchema = new mongoose.Schema({
       },
     ],
   },
+  selectedPics: {
+    type: [
+      {
+        link: {
+          type: String,
+        },
+        comment: {
+          type: String,
+        },
+        name: {
+          type: String,
+        },
+      },
+    ],
+  },
   finalPics: {
     type: [
       {
@@ -124,6 +139,27 @@ const sessionSchema = new mongoose.Schema({
     type: String,
   },
   ratingValue: {
+    type: {
+      rating: {
+        type: Number,
+        required: false,
+      },
+      comments: {
+        type: String,
+        required: false,
+      },
+    },
+  },
+  deliveryTime: {
+    type: String,
+  },
+  price: {
+    type: String,
+  },
+  quantityPrevPhotos: {
+    type: String,
+  },
+  quantityFinalPhotos: {
     type: String,
   },
 });
