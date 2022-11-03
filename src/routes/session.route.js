@@ -1,7 +1,6 @@
 const { request, response, query } = require("express");
 const express = require("express");
 const { getUser, getUserRate, editUser } = require("../usecases/user.usecase");
-
 const {
   createNewSession,
   getSessionsWhitPhotographerId,
@@ -9,10 +8,9 @@ const {
   getUniqueSession,
   editSession,
 } = require("../usecases/sessions.usecase");
-
 const { auth, verifyUser, verifyPackageOwner } = require("../middlewares/auth.middleware");
-
 const router = express.Router();
+
 router.post("/", async (request, response) => {
   const { body } = request;
   try {
