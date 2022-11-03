@@ -1,9 +1,8 @@
 const express = require("express");
-const env = require ('react-dotenv')
 const { STRIPE_SECRET, STRIPE_WEBHOOK_KEY } = process.env;
-const stripe = require("stripe")(env.STRIPE_SECRET);
+const stripe = require("stripe")(process.env.STRIPE_SECRET) 
 
-const { DOMAIN } = env.DOMAIN;
+const { DOMAIN } = process.env;
 
 
 const router = express.Router();
