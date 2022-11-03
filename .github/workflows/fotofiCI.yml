@@ -35,6 +35,10 @@ jobs:
           echo DB_NAME=${{ secrets.DB_NAME }} >> .env
           echo JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }} >> .env
       
-    - name: 'Install and run'
+       
+    - name: 'Clean installation'
+      run: npm ci
+    - name: 'PM2 reload'
       run: 'pm2 reload 0' 
-    - run: npm ci
+      
+    
