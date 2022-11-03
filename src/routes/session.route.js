@@ -132,7 +132,6 @@ router.patch("/session/rate/:id", auth, async (request, response) => {
         message: "Successfully rated session",
       });
     } else {
-      console.log(uniqueSession.ratingValue.rating);
       response.json({
         success: false,
         message: "Session already rated",
