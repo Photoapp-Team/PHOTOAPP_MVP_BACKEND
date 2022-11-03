@@ -24,4 +24,16 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
+          
+    - name: 'Create env file'
+      run: |
+          touch .env
+          echo DB_USERNAME=${{ secrets.DB_USERNAME >> .env
+          echo DB_PASSWORD=${{ secrets.DB_PASSWORD }} >> .env
+          echo DB_HOST=${{ secrets.DB_HOST }} >> .env
+          echo DB_NAME=${{ secrets.DB_NAME }} >> .env
+          echo JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }} >> .env
+      
+    - name: 'Install and run'
+      run: 'pm2 reload 0' 
     - run: npm ci
