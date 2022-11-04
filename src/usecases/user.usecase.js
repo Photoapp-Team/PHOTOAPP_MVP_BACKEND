@@ -13,7 +13,6 @@ const getUser = async (id) => {
 };
 
 const getUserBasicInfo = async (id) => {
-  console.log(id);
   const user = await User.findById(id).select("username profilePic location name lastname");
   if (user._doc.location?.street) {
     user._doc.location.street = "";
