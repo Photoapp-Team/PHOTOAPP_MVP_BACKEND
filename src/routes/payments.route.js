@@ -1,7 +1,7 @@
 const express = require("express");
 const { STRIPE_SECRET, STRIPE_WEBHOOK_KEY } = process.env;
-const stripe = require("stripe")(process.env.STRIPE_SECRET) 
-
+const stripe = require("stripe")(process.env.STRIPE_SECRET); 
+const User = require("../models/users.model");
 const { DOMAIN } = process.env;
 
 
@@ -9,11 +9,15 @@ const router = express.Router();
 router.use(express.static('.'));
 
 router.post('/create-checkout-session', async (req, res) => {
+  const {userId } = req.body;
+  console.log ("req.body", req)
     const arrayProducts= [];
     const prices = await stripe.prices.list({
         lookup_keys: [req.body.lookup_key],
         expand: ['data.product'],
       });
+
+
     const session = await stripe.checkout.sessions.create({
       billing_address_collection: 'auto',
       line_items: [
@@ -23,25 +27,35 @@ router.post('/create-checkout-session', async (req, res) => {
         },
       ],
       mode: 'subscription',
-      success_url: `${DOMAIN}/payment_sucess`, 
-      cancel_url: `${DOMAIN}/payment_failed`,
+      success_url: `${DOMAIN}/payment_success`, 
+      cancel_url: `${DOMAIN}/payment_canceled`,
     });
-    console.log (session.url)
-    res.redirect(303, session.url);
+    const today = new Date ()
+    const expirationDate = new Date (new Date().setDate(today.getDate()+30))
 
+    console.log ("userId", userId)
+      const user= await User.findById (userId);
+      console.log ("user", user)
+      user.premium.isPremium= true;
+      user.premium.expirationDate= expirationDate;
+      user.save()
+      console.log ("user", user)
+
+    console.log (session.url)
+    res.redirect(303, session.url);  
   });
   
 router.post('/create-portal-session', async (req, res) => {
-    const { session_id } = req.body;
-    const checkoutSession = await stripe.checkout.sessions.retrieve(session_id);
+    const { session_id, userId } = req.body;
+    const checkoutSession = await stripe.checkout.sessions.retrieve(session_id,userId);
     const returnUrl = DOMAIN;
   
     const portalSession = await stripe.billingPortal.sessions.create({
       customer: checkoutSession.customer,
       return_url: returnUrl,
     });
-  
     res.redirect(303, portalSession.url);
+
   });
   
   router.post(
@@ -49,6 +63,7 @@ router.post('/create-portal-session', async (req, res) => {
     express.raw({ type: 'application/json' }),
     (request, response) => {
       let event = request.body;
+      console.log ("event", event)
         const endpointSecret = STRIPE_WEBHOOK_KEY ;
 
       if (endpointSecret) {
@@ -83,7 +98,6 @@ router.post('/create-portal-session', async (req, res) => {
           subscription = event.data.object;
           status = subscription.status;
           console.log(`Subscription status is ${status}.`);
-          // fecha de cuando inicia y cuando termina  y estatus de pagado
           // Then define and call a method to handle the subscription created.
           // handleSubscriptionCreated(subscription);
           break;
