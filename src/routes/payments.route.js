@@ -28,8 +28,7 @@ router.post('/create-checkout-session', async (req, res) => {
       ],
       mode: 'subscription',
       success_url: `${DOMAIN}/payment_success?userId=${userId}`, 
-      cancel_url: `${DOMAIN}/payment_canceled`,
-      extra_info_user:{userId}
+      cancel_url: `${DOMAIN}/payment_canceled`
     });
     const today = new Date ()
     const expirationDate = new Date (new Date().setDate(today.getDate()+30));
