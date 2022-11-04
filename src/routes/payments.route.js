@@ -9,14 +9,14 @@ const router = express.Router();
 router.use(express.static('.'));
 
 router.post('/create-checkout-session', async (req, res) => {
-  const {userId } = req.body;
-  console.log ("req.body", req)
+  const { userId } = req.body;
+
     const arrayProducts= [];
     const prices = await stripe.prices.list({
-        lookup_keys: [req.body.lookup_key],
+        lookup_keys: [],
         expand: ['data.product'],
       });
-
+      console.log({prices})
 
     const session = await stripe.checkout.sessions.create({
       billing_address_collection: 'auto',
@@ -27,19 +27,18 @@ router.post('/create-checkout-session', async (req, res) => {
         },
       ],
       mode: 'subscription',
-      success_url: `${DOMAIN}/payment_success`, 
+      success_url: `${DOMAIN}/payment_success?userId=${userId}`, 
       cancel_url: `${DOMAIN}/payment_canceled`,
+      extra_info_user:{userId}
     });
     const today = new Date ()
-    const expirationDate = new Date (new Date().setDate(today.getDate()+30))
-
-    console.log ("userId", userId)
-      const user= await User.findById (userId);
-      console.log ("user", user)
-      user.premium.isPremium= true;
-      user.premium.expirationDate= expirationDate;
-      user.save()
-      console.log ("user", user)
+    const expirationDate = new Date (new Date().setDate(today.getDate()+30));
+    const user= await User.findById (userId);
+    console.log ("user", user)
+    user.premium.isPremium= true;
+    user.premium.expirationDate= expirationDate;
+    user.save()
+    console.log ("user", user)
 
     console.log (session.url)
     res.redirect(303, session.url);  
@@ -98,6 +97,7 @@ router.post('/create-portal-session', async (req, res) => {
           subscription = event.data.object;
           status = subscription.status;
           console.log(`Subscription status is ${status}.`);
+          console.log({subscription});
           // Then define and call a method to handle the subscription created.
           // handleSubscriptionCreated(subscription);
           break;

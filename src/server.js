@@ -18,7 +18,7 @@ const routerPayments = require("./routes/payments.route");
 // Middlewares
 server.use(cors());
 server.use(express.json());
-
+server.use(express.urlencoded())
 server.use("/auth", routerAuth);
 server.use("/users", routerUser);
 server.use("/photo", routePhoto);
