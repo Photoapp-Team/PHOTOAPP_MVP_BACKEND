@@ -40,6 +40,10 @@ jobs:
           echo AWS_BUCKET_PROFILE_NAME=${{ secrets.AWS_BUCKET_PROFILE_NAME }} >> .env
           echo AWS_BUCKET_PACKAGE_NAME=${{ secrets.AWS_BUCKET_PACKAGE_NAME }} >> .env
           echo AWS_BUCKET_SESSION_NAME=${{ secrets.AWS_BUCKET_SESSION_NAME }} >> .env
+          echo DOMAIN=${{ secrets.DOMAIN }} >> .env
+          echo STRIPE_SECRET=${{ secrets.STRIPE_SECRET }} >> .env
+          echo STRIPE_PUBLIC=${{ secrets.STRIPE_PUBLIC }} >> .env
+          echo STRIPE_WEBHOOK_KEY=${{ secrets.STRIPE_WEBHOOK_KEY }} >> .env
       
        
     - name: 'Clean installation'
