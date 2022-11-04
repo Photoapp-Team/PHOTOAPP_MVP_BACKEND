@@ -51,7 +51,11 @@ router.get("/:id", async (request, response) => {
 router.get("/", async (request, response) => {
   try {
     const { query } = request;
-    const users = await getFilteredUser(query);
+    let filters = { ...query };
+    if (query.photoTags instanceof Array) {
+      filters = { ...filters, photoTags: { $all: query.photoTags } };
+    }
+    const users = await getFilteredUser(filters);
     response.json({
       success: true,
       data: {
