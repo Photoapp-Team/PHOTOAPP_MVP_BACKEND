@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 
+
 const server = express();
 
 //Routers
@@ -11,11 +12,13 @@ const routeService = require("./routes/service.route");
 const routerPackages = require("./routes/packages.route");
 const routerSessions = require("./routes/session.route");
 const routerImagesUpload = require("./routes/upload.route");
+const routerPayments = require("./routes/payments.route");
+
 
 // Middlewares
 server.use(cors());
 server.use(express.json());
-
+server.use(express.urlencoded())
 server.use("/auth", routerAuth);
 server.use("/users", routerUser);
 server.use("/photo", routePhoto);
@@ -23,6 +26,7 @@ server.use("/services", routeService);
 server.use("/packages", routerPackages);
 server.use("/sessions", routerSessions);
 server.use("/upload", routerImagesUpload);
+server.use("/payments", routerPayments);
 
 server.get("/", async (request, response) => {
   response.json("Welcome to the Fotofi API");
