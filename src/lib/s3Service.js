@@ -24,8 +24,7 @@ exports.s3UploadProfile = async (files, id) => {
 exports.s3UploadProfilePics = async (files, id, route) => {
   const S3client = new S3Client();
 
-  const paramsS3 = Object.entries(files).map(([fieldname, files]) => {
-    const file = files[0];
+  const paramsS3 = files.map((file) => {
     const key = `uploads/${id}/${route}/${uuid()}-${file.originalname}`;
     return {
       Bucket: process.env.AWS_BUCKET_PROFILE_NAME,
