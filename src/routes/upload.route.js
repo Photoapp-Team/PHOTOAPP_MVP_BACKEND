@@ -34,6 +34,30 @@ router.post("/profile/:id", multiUpload, async (request, response) => {
   }
 });
 
+router.post("/displayPics/:id", upload.array("displayPics"), async (request, response) => {
+  try {
+    const { params } = request;
+    const route = "displayPics";
+    const { id } = params;
+    const { s3ObjectResponse, paramsS3 } = await s3UploadProfile(request.files, id, route);
+    const displayPics = paramsS3.map((paramS3) => {
+      const name = paramS3.Key.split("/").reverse();
+      return {
+        link: `https://s3-fotofi-backend-profile-uploads.s3.amazonaws.com/${paramS3.Key}`,
+        name: name[0],
+      };
+    });
+    const updatedUser = await editUser(id, { displayPics });
+    return response.json({ status: "success", updatedUser });
+  } catch (error) {
+    response.status(400);
+    response.json({
+      success: false,
+      message: error.message,
+    });
+  }
+});
+
 router.post("/packages/:id", multiUploadPackage, async (request, response) => {
   try {
     const { params } = request;
