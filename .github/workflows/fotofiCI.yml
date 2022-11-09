@@ -34,7 +34,21 @@ jobs:
           echo DB_HOST=${{ secrets.DB_HOST }} >> .env
           echo DB_NAME=${{ secrets.DB_NAME }} >> .env
           echo JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }} >> .env
+          echo AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }} >> .env
+          echo AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }} >> .env
+          echo AWS_REGION=${{ secrets.AWS_REGION }} >> .env
+          echo AWS_BUCKET_PROFILE_NAME=${{ secrets.AWS_BUCKET_PROFILE_NAME }} >> .env
+          echo AWS_BUCKET_PACKAGE_NAME=${{ secrets.AWS_BUCKET_PACKAGE_NAME }} >> .env
+          echo AWS_BUCKET_SESSION_NAME=${{ secrets.AWS_BUCKET_SESSION_NAME }} >> .env
+          echo DOMAIN=${{ secrets.DOMAIN }} >> .env
+          echo STRIPE_SECRET=${{ secrets.STRIPE_SECRET }} >> .env
+          echo STRIPE_PUBLIC=${{ secrets.STRIPE_PUBLIC }} >> .env
+          echo STRIPE_WEBHOOK_KEY=${{ secrets.STRIPE_WEBHOOK_KEY }} >> .env
       
-    - name: 'Install and run'
+       
+    - name: 'Clean installation'
+      run: npm ci
+    - name: 'PM2 reload'
       run: 'pm2 reload 0' 
-    - run: npm ci
+      
+    
