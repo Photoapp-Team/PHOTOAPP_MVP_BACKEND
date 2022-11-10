@@ -1,6 +1,11 @@
 const { request } = require("express");
 const express = require("express");
-const { s3UploadProfile, s3UploadPackage, s3UploadSession } = require("../lib/s3Service");
+const {
+  s3UploadProfile,
+  s3UploadPackage,
+  s3UploadSession,
+  s3UploadProfilePics,
+} = require("../lib/s3Service");
 const {
   upload,
   multiUpload,
@@ -24,6 +29,27 @@ router.post("/profile/:id", multiUpload, async (request, response) => {
       };
     }, {});
     const updatedUser = await editUser(id, userFieldsToUpdate);
+    return response.json({ status: "success", updatedUser });
+  } catch (error) {
+    response.status(400);
+    response.json({
+      success: false,
+      message: error.message,
+    });
+  }
+});
+
+router.post("/displayPics/:id", upload.array("displayPics"), async (request, response) => {
+  try {
+    const { params } = request;
+    const route = "displayPics";
+    const { id } = params;
+    const { s3ObjectResponse, paramsS3 } = await s3UploadProfilePics(request.files, id, route);
+    const displayPics = paramsS3.map((paramS3) => {
+      const name = paramS3.Key.split("/").reverse();
+      return `https://s3-fotofi-backend-profile-uploads.s3.amazonaws.com/${paramS3.Key}`;
+    });
+    const updatedUser = await editUser(id, { displayPics });
     return response.json({ status: "success", updatedUser });
   } catch (error) {
     response.status(400);

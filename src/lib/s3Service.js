@@ -21,6 +21,24 @@ exports.s3UploadProfile = async (files, id) => {
   return { s3ObjectResponse, paramsS3 };
 };
 
+exports.s3UploadProfilePics = async (files, id, route) => {
+  const S3client = new S3Client();
+
+  const paramsS3 = files.map((file) => {
+    const key = `uploads/${id}/${route}/${uuid()}-${file.originalname}`;
+    return {
+      Bucket: process.env.AWS_BUCKET_PROFILE_NAME,
+      Key: key,
+      Body: file.buffer,
+      fieldname: file.fieldname,
+    };
+  });
+  const s3ObjectResponse = await Promise.all(
+    paramsS3.map((param) => S3client.send(new PutObjectCommand(param)))
+  );
+  return { s3ObjectResponse, paramsS3 };
+};
+
 exports.s3UploadPackage = async (files, id) => {
   const S3client = new S3Client();
 
