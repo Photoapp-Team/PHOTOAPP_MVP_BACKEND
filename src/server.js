@@ -1,8 +1,8 @@
 const express = require("express");
 const cors = require("cors");
 
-
 const server = express();
+connectDB();
 
 //Routers
 const routerAuth = require("./routes/auth.route");
@@ -13,6 +13,7 @@ const routerPackages = require("./routes/packages.route");
 const routerSessions = require("./routes/session.route");
 const routerImagesUpload = require("./routes/upload.route");
 const routerPayments = require("./routes/payments.route");
+const { connectDB } = require("./lib/db.config");
 
 
 // Middlewares
