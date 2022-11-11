@@ -69,12 +69,8 @@ const userSchema = new mongoose.Schema({
   notifications: {
     type: Number,
   },
-  payments: {
-    type: [
-      {
-        type: String,
-      },
-    ],
+  currentPaymentId: {
+    type: String,
   },
   location: {
     type: {
