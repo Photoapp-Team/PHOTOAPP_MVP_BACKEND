@@ -1,7 +1,6 @@
 const express = require("express");
 const cors = require("cors");
 
-
 const server = express();
 
 //Routers
@@ -14,11 +13,10 @@ const routerSessions = require("./routes/session.route");
 const routerImagesUpload = require("./routes/upload.route");
 const routerPayments = require("./routes/payments.route");
 
-
 // Middlewares
 server.use(cors());
 server.use(express.json());
-server.use(express.urlencoded())
+server.use(express.urlencoded());
 server.use("/auth", routerAuth);
 server.use("/users", routerUser);
 server.use("/photo", routePhoto);
