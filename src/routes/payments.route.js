@@ -26,7 +26,7 @@ router.post("/create-checkout-session", async (req, res) => {
     ],
     mode: "subscription",
     success_url: `${DOMAIN}/PayResponse/${userId}?success=true`,
-    cancel_url: `${DOMAIN}?canceled=true`,
+    cancel_url: `${DOMAIN}/PayResponse/${userId}?success=false`,
   });
 
   if (session.id) {
@@ -67,6 +67,7 @@ router.post("/webhook", express.json({ type: "application/json" }), async (reque
         const expirationDate = new Date(new Date().setDate(today.getDate() + 30));
         user.premium.isPremium = true;
         user.premium.expirationDate = expirationDate;
+        user.premium.paymentHistory.push(sessionCompleted);
         user.save();
       }
 
