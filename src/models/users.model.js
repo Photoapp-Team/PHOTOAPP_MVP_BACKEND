@@ -107,6 +107,9 @@ const userSchema = new mongoose.Schema({
       expirationDate: {
         type: Date,
       },
+      paymentHistory: {
+        type: [{ type: Object }],
+      },
     },
   },
   socialNetwork: {

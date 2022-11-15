@@ -13,7 +13,6 @@ const getAllPackages = (filters) => {
 
 const getPhotographerId = (id) => {
   const package = Package.find({ photographerId: id });
-  console.log("encontrados", package);
   return package;
 };
 
