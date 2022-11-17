@@ -8,7 +8,7 @@ const getToken = (payLoad) => {
 
 const getTokenData = (token) => {
     let data = null;
-    jht.verify(token, 'SECRET', (err, decoded) => {
+    jwt.verify(token, 'SECRET', (err, decoded) => {
         if(err) {
             console.log('Error al obtener data del token');
         } else{

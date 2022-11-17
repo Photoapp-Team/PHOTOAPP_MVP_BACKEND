@@ -1,7 +1,7 @@
 const User = require('../models/users.model');
 const { v4: uuidv4 } = require('uuid');
 const { getToken, getTokenData } = require('../lib/jwt.config');
-const { getTemplate, sendEmail } = require('../config/mail.con');
+const { getTemplate, sendEmail } = require('../lib/mail.congif');
 
 
 

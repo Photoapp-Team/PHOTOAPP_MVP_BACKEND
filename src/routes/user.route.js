@@ -9,8 +9,9 @@ const {
   getUserBasicInfo,
 } = require("../usecases/user.usecase");
 const { auth, verifyUser } = require("../middlewares/auth.middleware");
-
 const router = express.Router();
+const Usercontroller = require('../usecases/emailverify.usecase');
+
 
 router.post("/", async (request, response) => {
   const { body } = request;

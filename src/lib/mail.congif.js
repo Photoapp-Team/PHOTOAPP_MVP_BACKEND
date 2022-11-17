@@ -1,3 +1,5 @@
+const nodemailer = require('nodemailer');
+
 const mail = {
     user: MAIL_ADRESS,
     pass: MAIL_PASSWORD, 
@@ -20,10 +22,10 @@ let transporter = nodemailer.createTransport({
     try {
         
         await transporter.sendMail({
-            from: `MHCode <${ mail.user }>`, // sender address
+            from: `FOTOFI <${ mail.user }>`, // sender address
             to: email, // list of receivers
             subject, // Subject line
-            text: "Hola amigos, suscríbance para más videos", // plain text body
+            text: "Prueba de correo", // plain text body
             html, // html body
         });
 
@@ -50,7 +52,4 @@ let transporter = nodemailer.createTransport({
       `;
   }
 
-  module.exports = {
-    sendEmail,
-    getTemplate
-  }
+  module.exports = { sendEmail, getTemplate }
