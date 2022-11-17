@@ -18,6 +18,13 @@ const getSessionsWhitPhotographerId = (id) => {
   return sessions;
 };
 
+const getUnavailableDates = (id) => {
+  const sessions = Session.find({
+    photographerId: id,
+  }).select("status startDate");
+  return sessions;
+};
+
 const editSession = (id, SessionData) => {
   const editedSession = Session.findByIdAndUpdate(id, SessionData, {
     returnDocument: "after",
@@ -36,4 +43,5 @@ module.exports = {
   getSessionsWhitUserId,
   editSession,
   getUniqueSession,
+  getUnavailableDates,
 };
