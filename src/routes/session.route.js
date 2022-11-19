@@ -7,8 +7,10 @@ const {
   getSessionsWhitUserId,
   getUniqueSession,
   editSession,
+  getUnavailableDates,
 } = require("../usecases/sessions.usecase");
 const { auth, verifyUser, verifyPackageOwner } = require("../middlewares/auth.middleware");
+const { AccessAnalyzer } = require("aws-sdk");
 const router = express.Router();
 
 router.post("/", async (request, response) => {
@@ -37,6 +39,39 @@ router.get("/photographerId/:id", async (request, response) => {
       success: true,
       data: {
         sessions,
+      },
+    });
+  } catch (error) {
+    response.status(400);
+    response.json({
+      success: false,
+      message: error.message,
+    });
+  }
+});
+
+router.get("/unavailableDates/:id", async (request, response) => {
+  try {
+    const { params } = request;
+
+    const sessions = await getUnavailableDates(params.id);
+    const dateNow = Date.now();
+
+    var today = new Date(parseInt(dateNow));
+
+    const unavailableDates = sessions.reduce((accum, session) => {
+      if (session.startDate >= today && session.status.scheduled != undefined) {
+        const object = session._doc.startDate;
+        return [...accum, object];
+      }
+
+      return accum;
+    }, []);
+
+    response.json({
+      success: true,
+      data: {
+        unavailableDates,
       },
     });
   } catch (error) {
