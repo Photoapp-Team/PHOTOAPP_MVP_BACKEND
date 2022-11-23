@@ -7,9 +7,15 @@ const {
   getSessionsWhitUserId,
   getUniqueSession,
   editSession,
+  deleteSession,
   getUnavailableDates,
 } = require("../usecases/sessions.usecase");
-const { auth, verifyUser, verifyPackageOwner } = require("../middlewares/auth.middleware");
+const {
+  auth,
+  verifyUser,
+  verifyPackageOwner,
+  verifySessionOwner,
+} = require("../middlewares/auth.middleware");
 const { AccessAnalyzer } = require("aws-sdk");
 const router = express.Router();
 
@@ -172,6 +178,23 @@ router.patch("/session/rate/:id", auth, async (request, response) => {
         message: "Session already rated",
       });
     }
+  } catch (error) {
+    response.status(400);
+    response.json({
+      success: false,
+      message: error.message,
+    });
+  }
+});
+
+router.delete("/:id", auth, verifySessionOwner, async (request, response) => {
+  try {
+    const { params } = request;
+    const deletedSession = await deleteSession(params.id);
+    response.json({
+      success: true,
+      message: "Session successfully deleted",
+    });
   } catch (error) {
     response.status(400);
     response.json({
