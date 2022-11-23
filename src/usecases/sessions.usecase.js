@@ -37,6 +37,11 @@ const getUniqueSession = (id) => {
   return session;
 };
 
+const deleteSession = (id) => {
+  const sessionDelete = Session.findByIdAndDelete(id);
+  return sessionDelete;
+};
+
 module.exports = {
   createNewSession,
   getSessionsWhitPhotographerId,
@@ -44,4 +49,5 @@ module.exports = {
   editSession,
   getUniqueSession,
   getUnavailableDates,
+  deleteSession,
 };
